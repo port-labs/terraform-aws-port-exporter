@@ -1,5 +1,5 @@
 module "port_aws_exporter" {
-  source = "../terraform-aws-port-exporter/"
+  source = "git::https://github.com/port-labs/terraform-aws-port-exporter.git"
   
   stack_name                       = var.stack_name
   secret_name                      = var.secret_name
