@@ -45,12 +45,6 @@ terraform plan --var-file=path/to/variables.tfvars        # Preview the changes 
 terraform apply --var-file=path/to/variables.tfvars        # Apply the changes and provision the resources in your AWS account, providing the path to your variables file using the --var-file option.
 ```
 
-To remove the resources when they are no longer needed use the `destroy` command:
-
-```bash
-terraform destroy --var-file=path/to/variables.tfvars
-```
-
 
 ### Variables
 The following variables should be configured for this module:
@@ -63,6 +57,19 @@ The following variables should be configured for this module:
 - `function_name`: The name of the AWS Lambda function.
 
 > To see all possible parameters, see [`Variables.tf`](./variables.tf).
+
+### After Installation 
+* You should see your the Port exporter in your CloudFormation Stacks with the name: 
+
+   `serverlessrepo-<your_stack_name>`
+
+
+* To remove the resources when they are no longer needed use the `destroy` command:
+
+   ```bash
+   terraform destroy --var-file=path/to/variables.tfvars
+   ```
+
 
 ## Further Information
 See the [examples](./examples/) folder for example about deploying the module and deploying EventBridge rules for your exporter.
