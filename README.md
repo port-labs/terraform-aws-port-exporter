@@ -20,20 +20,16 @@ Before using this module, make sure you have completed the following prerequisit
 
 ## Getting Started
 
-### Using the Module
+### Simple module usage
 
 To use this module, include the following code in your Terraform configuration:
 
 ```terraform
 module "port_aws_exporter" {
-  source = "git::https://github.com/your/repo.git"
+  source = "git::https://github.com/port-labs/terraform-aws-port-exporter.git"
   
-  stack_name           = var.stack_name
-  secret_name          = var.secret_name
-  create_bucket        = var.create_bucket
-  bucket_name          = var.bucket_name
-  config_json_file     = var.config_json_file
-  function_name        = var.function_name
+  # Variables
+  config_json_file     = "./examples/run_module_example/config.json"
 }
 ```
 ### Running Terraform
@@ -47,16 +43,32 @@ terraform apply --var-file=path/to/variables.tfvars        # Apply the changes a
 
 
 ### Variables
-The following variables should be configured for this module:
+The following variables can be configured for this module:
 
 - `stack_name`: The name of the CloudFormation stack.
-- `secret_name`: The name of the secret for storing credentials.
-- `create_bucket`: Specifies whether to create an S3 bucket.
-- `bucket_name`: The name of the S3 bucket.
-- `config_json_file`: The path to the configuration JSON file.
+- `secret_name`: secret name for Port credentials, in case you don't provide your own (custom_port_credentials_secret_arn).
+- `create_bucket`: Flag to control if to create a new bucket for the exporter configuration or use an existing one.
+- `bucket_name`: Bucket name for the exporter configuration. Lambda also use it to write intermediate temporary files.
+- `config_json_file`: Required - the path to the configuration JSON file.
 - `function_name`: The name of the AWS Lambda function.
+- `iam_policy_name`: Optional policy name for Port exporter's role
+- `custom_port_credentials_secret_arn`: Optional Secret ARN for Port credentials (client id and client secret). 
 
-> To see all possible parameters, see [`Variables.tf`](./variables.tf).
+   The secret value should be in the pattern: 
+   
+   {\"id\":\"<PORT_CLIENT_ID>\",\"clientSecret\":\"<PORT_CLIENT_SECRET>\"}
+- `lambda_policy_file`: Optional path to a AWS policy json file to grant to the Lambda function. If not passed, using the default exporter policies
+- `events_queue_name`: The name of the events queue to the Port exporter.
+- `schedule_state`: schedule state - 'ENABLED' or 'DISABLED'. We recommend to enable it only after one successful run. Also make sure to update the schedule expression interval to be longer than the execution time.
+- `schedule_expression`: Required schedule expression to define an event schedule for the exporter, according to the following [spec](https://docs.aws.amazon.com/lambda/latest/dg/services-cloudwatchevents-expressions.html).
+       
+
+## Exporter AWS policies 
+By default, the exporter will be granted with the [default exporter policy](./defaults/policy.json).
+
+If you wish to pass your custom [AWS policy](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html),
+
+create a new policy file, and pass it's path to the `lambda_policy_file` variable.
 
 ### After Installation 
 * You should see your the Port exporter in your CloudFormation Stacks with the name: 
@@ -72,4 +84,5 @@ The following variables should be configured for this module:
 
 
 ## Further Information
-See the [examples](./examples/) folder for example about deploying the module and deploying EventBridge rules for your exporter.
+- See the [examples](./examples/) folder for examples about deploying the module and deploying EventBridge rules for your exporter.
+- See the [AWS exporter docs](https://docs.getport.io/build-your-software-catalog/sync-data-to-catalog/aws/)
