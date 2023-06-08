@@ -26,7 +26,7 @@ To use this module, include the following code in your Terraform configuration:
 
 ```terraform
 module "port_aws_exporter" {
-  source = "git::https://github.com/your/repo.git"
+  source = "git::https://github.com/port-labs/terraform-aws-port-exporter.git"
   
   stack_name           = var.stack_name
   secret_name          = var.secret_name
