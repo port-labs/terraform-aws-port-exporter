@@ -27,8 +27,9 @@ After configuring the module, run the following Terraform commands:
 Remember to run `terraform destroy --var-file=path/to/variables.tfvars` to remove the resources when they are no longer needed, providing the path to your variables file using the --var-file option.
 
 Variables
-The following variables can be configured for this module:
+The following variables must be configured for this module:
 
+```
 stack_name: (Required) The name of the CloudFormation stack.
 secret_name: (Required) The name of the secret for storing credentials.
 create_bucket: (Required) Specifies whether to create an S3 bucket.
@@ -36,4 +37,6 @@ bucket_name: (Required) The name of the S3 bucket.
 config_json_file: (Required) The path to the configuration JSON file.
 function_name: (Required) The name of the AWS Lambda function.
 Please refer to the module source code or documentation for more information on each variable.
+```
 
+To see all possible parameters, see `Variables.tf`.
