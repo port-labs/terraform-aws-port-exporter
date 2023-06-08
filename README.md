@@ -21,10 +21,10 @@ module "port_aws_exporter" {
 
 After configuring the module, run the following Terraform commands:
 
-terraform init: Initialize the Terraform configuration.
-terraform plan --var-file=path/to/variables.tfvars: Preview the changes to be applied, providing the path to your variables file using the --var-file option.
-terraform apply --var-file=path/to/variables.tfvars: Apply the changes and provision the resources in your AWS account, providing the path to your variables file using the --var-file option.
-Remember to run terraform destroy --var-file=path/to/variables.tfvars to remove the resources when they are no longer needed, providing the path to your variables file using the --var-file option.
+- `terraform init`: Initialize the Terraform configuration.
+- `terraform plan --var-file=path/to/variables.tfvars`: Preview the changes to be applied, providing the path to your variables file using the --var-file option.
+- `terraform apply --var-file=path/to/variables.tfvars`: Apply the changes and provision the resources in your AWS account, providing the path to your variables file using the --var-file option.
+Remember to run `terraform destroy --var-file=path/to/variables.tfvars` to remove the resources when they are no longer needed, providing the path to your variables file using the --var-file option.
 
 Variables
 The following variables can be configured for this module:
