@@ -46,19 +46,22 @@ terraform apply --var-file=path/to/variables.tfvars        # Apply the changes a
 The following variables can be configured for this module:
 
 - `stack_name`: The name of the CloudFormation stack.
-- `secret_name`: Required secret name for Port credentials, in case you don't provide your own (custom_port_credentials_secret_arn).
+- `secret_name`: secret name for Port credentials, in case you don't provide your own (custom_port_credentials_secret_arn).
 - `create_bucket`: Flag to control if to create a new bucket for the exporter configuration or use an existing one.
 - `bucket_name`: Bucket name for the exporter configuration. Lambda also use it to write intermediate temporary files.
 - `config_json_file`: Required - the path to the configuration JSON file.
 - `function_name`: The name of the AWS Lambda function.
 - `iam_policy_name`: Optional policy name for Port exporter's role
-- `custom_port_credentials_secret_arn`: Optional Secret ARN for Port credentials (client id and client secret). The secret value should look like {\"id\":\"<PORT_CLIENT_ID>\",\"clientSecret\":\"<PORT_CLIENT_SECRET>\"}
+- `custom_port_credentials_secret_arn`: Optional Secret ARN for Port credentials (client id and client secret). 
+
+   The secret value should be in the pattern: 
+   
+   {\"id\":\"<PORT_CLIENT_ID>\",\"clientSecret\":\"<PORT_CLIENT_SECRET>\"}
 - `lambda_policy_file`: Optional path to a AWS policy json file to grant to the Lambda function. If not passed, using the default exporter policies
 - `events_queue_name`: The name of the events queue to the Port exporter.
 - `schedule_state`: schedule state - 'ENABLED' or 'DISABLED'. We recommend to enable it only after one successful run. Also make sure to update the schedule expression interval to be longer than the execution time.
-- `schedule_expression`: Required schedule expression to define an event schedule for the exporter, according to following spec https://docs.aws.amazon.com/lambda/latest/dg/services-cloudwatchevents-expressions.html.
-
-> To see all possible parameters, see [`Variables.tf`](./variables.tf).
+- `schedule_expression`: Required schedule expression to define an event schedule for the exporter, according to the following [spec](https://docs.aws.amazon.com/lambda/latest/dg/services-cloudwatchevents-expressions.html).
+       
 
 ## Exporter AWS policies 
 By default, the exporter will be granted with the [default exporter policy](./defaults/policy.json).
@@ -81,4 +84,5 @@ create a new policy file, and pass it's path to the `lambda_policy_file` variabl
 
 
 ## Further Information
-See the [examples](./examples/) folder for example about deploying the module and deploying EventBridge rules for your exporter.
+- See the [examples](./examples/) folder for examples about deploying the module and deploying EventBridge rules for your exporter.
+- See the [AWS exporter docs](https://docs.getport.io/build-your-software-catalog/sync-data-to-catalog/aws/)
