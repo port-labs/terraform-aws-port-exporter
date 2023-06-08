@@ -1,7 +1,7 @@
 variable "bucket_name" {
   description = "Required bucket name for the exporter configuration. Lambda also use it to write intermediate temporary files."
   type        = string
-  default     = null
+  default     = "port-aws-exporter"
 }
 
 variable "secret_name" {
