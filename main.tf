@@ -1,6 +1,6 @@
 resource "aws_iam_policy" "port_aws_exporter_policy" {
   name   = "PortAWSExporterPolicyModule"
-  policy = var.lambda_policy_file != null ? file(var.lambda_policy_file) : file("${path.module}/policy.json")
+  policy = var.lambda_policy_file != null ? file(var.lambda_policy_file) : file("${path.module}/defaults/policy.json")
 }
 
 resource "aws_serverlessapplicationrepository_cloudformation_stack" "port_aws_exporter_stack" {
@@ -42,7 +42,7 @@ resource "aws_secretsmanager_secret_version" "port_credentials_secret_version" {
 
 data "jsonschema_validator" "port_config_validation" {
   document = file(var.config_json_file)
-  schema   = "${path.module}/config_schema.json"
+  schema   = "${path.module}/defaults/config_schema.json"
 }
 
 resource "aws_s3_object" "config_file_object" {
