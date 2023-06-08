@@ -17,6 +17,7 @@ module "port_aws_exporter" {
   config_json_file     = var.config_json_file
   function_name        = var.function_name
 }
+```
 
 After configuring the module, run the following Terraform commands:
 
