@@ -58,6 +58,13 @@ The following variables should be configured for this module:
 
 > To see all possible parameters, see [`Variables.tf`](./variables.tf).
 
+## Exporter AWS policies 
+By default, the exporter will be granted with the [default exporter policy](./defaults/policy.json).
+
+If you wish to pass your custom [AWS policy](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html),
+
+create a new policy file, and pass it's path to the `lambda_policy_file` variable.
+
 ### After Installation 
 * You should see your the Port exporter in your CloudFormation Stacks with the name: 
 
