@@ -1,5 +1,5 @@
 output "exporter_policy_arn" {
-  value = aws_iam_policy.port_aws_exporter_policy
+  value = aws_iam_policy.port_aws_exporter_policy.arn
 }
 
 output "config_bucket_name" {

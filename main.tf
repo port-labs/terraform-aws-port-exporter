@@ -1,5 +1,5 @@
 resource "aws_iam_policy" "port_aws_exporter_policy" {
-  name   = "PortAWSExporterPolicyModule"
+  name   = var.iam_policy_name
   policy = var.lambda_policy_file != null ? file(var.lambda_policy_file) : file("${path.module}/defaults/policy.json")
 }
 

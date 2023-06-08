@@ -28,7 +28,7 @@ variable "config_json_file" {
 }
 
 variable "lambda_policy_file" {
-  description = "Optional path to a AWS policy json file to grant to the Lambda function. If not passed, using the default exporter policies"
+  description = "Optional path to a AWS policy json file to grant to the Lambda function"
   type = string
   default = null
 }
@@ -42,7 +42,7 @@ variable "function_name" {
 variable "stack_name" {
   description = "Required CloudFormation Stack name to the Port exporter"
   type        = string
-  default     = "serverlessrepo-port-aws-exporter"
+  default     = "port-aws-exporter"
 }
 
 variable "events_queue_name" {
