@@ -43,7 +43,7 @@ terraform apply --var-file=path/to/variables.tfvars        # Apply the changes a
 
 
 ### Variables
-The following variables are the main variable to be configured for this module:
+The following variables can be configured for this module:
 
 - `stack_name`: The name of the CloudFormation stack.
 - `secret_name`: Required secret name for Port credentials, in case you don't provide your own (custom_port_credentials_secret_arn).
