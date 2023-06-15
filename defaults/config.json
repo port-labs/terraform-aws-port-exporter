@@ -67,6 +67,12 @@
     },
     {
       "kind": "AWS::CloudFormation::Stack",
+      "selector": {
+        "query": "true",
+        "aws": {
+          "list_parameters": {}
+        }
+      },
       "port": {
         "entity": {
           "mappings": [

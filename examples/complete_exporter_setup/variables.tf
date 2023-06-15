@@ -23,14 +23,15 @@ variable "custom_port_credentials_secret_arn" {
 }
 
 variable "config_json_file" {
-  description = "Required path to the exporter config json file"
+  description = "Optional name to the generated exporter config json file"
   type        = string
+  default = "config.json"
 }
 
 variable "lambda_policy_file" {
-  description = "Optional path to a AWS policy json file to grant to the Lambda function"
+  description = "Optional name to the generated AWS policy json file to grant to the Lambda function"
   type = string
-  default = null
+  default = "policy.json"
 }
 
 variable "function_name" {

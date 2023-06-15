@@ -12,6 +12,10 @@ terraform {
       source  = "bpedman/jsonschema"
       version = "0.2.1"
     }
+    port-labs = {
+          source  = "port-labs/port-labs"
+          version = "~> 0.10.3"
+    }
   }
 }
 

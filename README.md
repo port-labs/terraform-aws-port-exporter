@@ -29,7 +29,7 @@ module "port_aws_exporter" {
   source = "git::https://github.com/port-labs/terraform-aws-port-exporter.git"
   
   # Variables
-  config_json_file     = "./examples/run_module_example/config.json"
+  config_json_file     = "./examples/complete_exporter_setup/config.json"
 }
 ```
 ### Running Terraform
