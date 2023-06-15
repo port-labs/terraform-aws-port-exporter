@@ -29,7 +29,7 @@ module "port_aws_exporter" {
   source = "git::https://github.com/port-labs/terraform-aws-port-exporter.git"
   
   # Variables
-  config_json_file     = "./examples/run_module_example/config.json"
+  config_json     = "./examples/run_module_example/config.json"
 }
 ```
 ### Running Terraform
@@ -49,7 +49,8 @@ The following variables can be configured for this module:
 - `secret_name`: secret name for Port credentials, in case you don't provide your own (custom_port_credentials_secret_arn).
 - `create_bucket`: Flag to control if to create a new bucket for the exporter configuration or use an existing one.
 - `bucket_name`: Bucket name for the exporter configuration. Lambda also use it to write intermediate temporary files.
-- `config_json_file`: Required - the path to the configuration JSON file.
+- `config_s3_key` - Required s3 key name of the exporter configuration.
+- `config_json`: Required file path / JSON formatted string of the exporter config.
 - `function_name`: The name of the AWS Lambda function.
 - `iam_policy_name`: Optional policy name for Port exporter's role
 - `custom_port_credentials_secret_arn`: Optional Secret ARN for Port credentials (client id and client secret). 
@@ -57,7 +58,7 @@ The following variables can be configured for this module:
    The secret value should be in the pattern: 
    
    {\"id\":\"<PORT_CLIENT_ID>\",\"clientSecret\":\"<PORT_CLIENT_SECRET>\"}
-- `lambda_policy_file`: Optional path to a AWS policy json file to grant to the Lambda function. If not passed, using the default exporter policies
+- `lambda_policy`: Optional path or JSON formatted string of the AWS policy json to grant to the Lambda function. If not passed, using the default exporter policies.
 - `events_queue_name`: The name of the events queue to the Port exporter.
 - `schedule_state`: schedule state - 'ENABLED' or 'DISABLED'. We recommend to enable it only after one successful run. Also make sure to update the schedule expression interval to be longer than the execution time.
 - `schedule_expression`: Required schedule expression to define an event schedule for the exporter, according to the following [spec](https://docs.aws.amazon.com/lambda/latest/dg/services-cloudwatchevents-expressions.html).
