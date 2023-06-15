@@ -1,103 +1,54 @@
-terraform {
-  required_providers {
-    port-labs = {
-          source  = "port-labs/port-labs"
-          version = "~> 0.10.3"
-    }
+resource "aws_iam_policy" "port_aws_exporter_policy" {
+  name   = var.iam_policy_name
+  policy = var.lambda_policy_file != null ? file(var.lambda_policy_file) : file("${path.module}/defaults/policy.json")
+}
+
+resource "aws_serverlessapplicationrepository_cloudformation_stack" "port_aws_exporter_stack" {
+  name           = var.stack_name
+  application_id = "arn:aws:serverlessrepo:eu-west-1:185657066287:applications/port-aws-exporter"
+  capabilities   = [
+    "CAPABILITY_IAM",
+    "CAPABILITY_RESOURCE_POLICY",
+  ]
+  parameters = {
+    "CustomIAMPolicyARN"             = aws_iam_policy.port_aws_exporter_policy.arn
+    "CustomPortCredentialsSecretARN" = var.custom_port_credentials_secret_arn != null ? var.custom_port_credentials_secret_arn : ""
+    "SecretName"                     = var.custom_port_credentials_secret_arn == null ? var.secret_name : ""
+    "CreateBucket"                   = var.create_bucket
+    "BucketName"                     = var.bucket_name
+    "ConfigJsonFileKey"              = var.config_json_file
+    "FunctionName"                   = var.function_name
+    "ScheduleExpression"             = var.schedule_expression
+    "ScheduleState"                  = var.schedule_state
   }
 }
 
-# Create Blueprints
-resource "port-labs_blueprint" "region" {
-  title      = "AWS Region"
-  icon       = "AWS"
-  identifier = "aws_region"
-
-  properties {
-    title = "Link"
-    identifier = "link"
-    type = "string"
-    format = "url"
-  }
+## Get the Port credentials from the environment variables
+data "env_variable" "port_client_id" {
+  name = "PORT_CLIENT_ID"
+}
+data "env_variable" "port_client_secret" {
+  name = "PORT_CLIENT_SECRET"
 }
 
-module "port_dynamodb_table" {
-  source = "/Users/matarpeles/Work/terraform-aws-port-exporter/modules/port_dynamodb_table"
+resource "aws_secretsmanager_secret_version" "port_credentials_secret_version" {
+  secret_id     = aws_serverlessapplicationrepository_cloudformation_stack.port_aws_exporter_stack.outputs.PortCredentialsSecretARN
+  secret_string = jsonencode({
+    id           = data.env_variable.port_client_id.value
+    clientSecret = data.env_variable.port_client_secret.value
+  })
+  depends_on = [aws_serverlessapplicationrepository_cloudformation_stack.port_aws_exporter_stack]
 }
 
-module "port_ecs_service" {
-  source = "/Users/matarpeles/Work/terraform-aws-port-exporter/modules/port_ecs_service"
+data "jsonschema_validator" "port_config_validation" {
+  document = file(var.config_json_file)
+  schema   = "${path.module}/defaults/config_schema.json"
 }
 
-module "port_lambda_function" {
-  source = "/Users/matarpeles/Work/terraform-aws-port-exporter/modules/port_lambda_function"
+resource "aws_s3_object" "config_file_object" {
+  bucket       = var.bucket_name
+  key          = var.config_json_file
+  content_type = "application/json"
+  content      = file(var.config_json_file)
+  depends_on   = [aws_serverlessapplicationrepository_cloudformation_stack.port_aws_exporter_stack]
 }
-
-module "port_rds_db_instance" {
-  source = "/Users/matarpeles/Work/terraform-aws-port-exporter/modules/port_rds_db_instance"
-}
-
-module "port_s3_bucket" {
-  source = "/Users/matarpeles/Work/terraform-aws-port-exporter/modules/port_s3_bucket"
-}
-
-module "port_sns_topic" {
-  source = "/Users/matarpeles/Work/terraform-aws-port-exporter/modules/port_sns_topic"
-}
-
-module "port_sqs_topic" {
-  source = "/Users/matarpeles/Work/terraform-aws-port-exporter/modules/port_sqs_queue"
-}
-
-
-## Create Iam policy and Mapping configuration
-#locals {
-#  combined_configs = [
-#    module.port_ecs_service.exporter_config,
-#    module.port_dynamodb_table.exporter_config,
-#    module.port_lambda_function.exporter_config,
-#    module.port_rds_db_instance.exporter_config,
-#    module.port_s3_bucket.exporter_config,
-#    module.port_sqs_topic.exporter_config,
-#    module.port_sns_topic.exporter_config,
-#  ]
-#
-#  combined_actions = flatten([
-#      module.port_ecs_service.iam_policy,
-#      module.port_dynamodb_table.iam_policy,
-#      module.port_lambda_function.iam_policy,
-#      module.port_rds_db_instance.iam_policy,
-#      module.port_s3_bucket.iam_policy,
-#      module.port_sqs_topic.iam_policy,
-#      module.port_sns_topic.iam_policy,
-#    ])
-#
-#  merged_policy = {
-#    Version   = "2012-10-17"
-#    Statement = [
-#      {
-#        Effect   = "Allow"
-#        Action   = local.combined_actions
-#        Resource = "*"
-#      }
-#    ]
-#  }
-#
-#  merged_config = {
-#    resources = local.combined_configs
-#  }
-#}
-#
-#
-## Deploy the AWS exporter application
-#module "port_aws_exporter" {
-#  source = "/Users/matarpeles/Work/terraform-aws-port-exporter"
-#
-#  stack_name    = var.stack_name
-#  secret_name   = var.secret_name
-#  create_bucket = var.create_bucket
-#  bucket_name   = var.bucket_name
-#  function_name = var.function_name
-#  config_json   = jsonencode(local.merged_config)
-#  lambda_policy = jsonencode(local.merged_policy)
-#}
