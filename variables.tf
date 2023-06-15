@@ -13,7 +13,7 @@ variable "secret_name" {
 variable "iam_policy_name" {
   description = "Optional policy name for Port exporter's role"
   type = string
-  default = "PortAWSExporterPolicyModule"
+  default = "PortAWSExporterPolicy"
 }
 
 variable "custom_port_credentials_secret_arn" {
