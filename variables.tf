@@ -42,7 +42,7 @@ variable "function_name" {
 variable "stack_name" {
   description = "Required CloudFormation Stack name to the Port exporter"
   type        = string
-  default     = "serverlessrepo-port-aws-exporter"
+  default     = "port-aws-exporter"
 }
 
 variable "events_queue_name" {
