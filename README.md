@@ -17,32 +17,7 @@ Before using this module, make sure you have completed the following prerequisit
    export PORT_CLIENT_ID="your-port-client-id"
    export PORT_CLIENT_SECRET="your-port-client-secret"
 
-
-## Getting Started
-
-### Simple module usage
-
-To use this module, include the following code in your Terraform configuration:
-
-```terraform
-module "port_aws_exporter" {
-  source = "git::https://github.com/port-labs/terraform-aws-port-exporter.git"
-  
-  # Variables
-  config_json     = "./examples/run_module_example/config.json"
-}
-```
-### Running Terraform
-After configuring the module, run the following Terraform commands:
-
-```bash
-terraform init        # Initialize the Terraform configuration.
-terraform plan --var-file=path/to/variables.tfvars        # Preview the changes to be applied, providing the path to your variables file using the --var-file option.
-terraform apply --var-file=path/to/variables.tfvars        # Apply the changes and provision the resources in your AWS account, providing the path to your variables file using the --var-file option.
-```
-
-
-### Variables
+## Variables
 The following variables can be configured for this module:
 
 - `stack_name`: The name of the CloudFormation stack.
