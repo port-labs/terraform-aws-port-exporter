@@ -22,7 +22,7 @@ variable "custom_port_credentials_secret_arn" {
   default     = null
 }
 
-variable "config_json_file" {
+variable "config_json" {
   description = "Required path to the exporter config json file"
   type        = string
 }

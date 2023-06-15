@@ -1,7 +1,6 @@
 variable "bucket_name" {
   description = "Required bucket name for the exporter configuration. Lambda also use it to write intermediate temporary files."
   type        = string
-  default     = "port-aws-exporter"
 }
 
 variable "secret_name" {
@@ -13,7 +12,7 @@ variable "secret_name" {
 variable "iam_policy_name" {
   description = "Optional policy name for Port exporter's role"
   type = string
-  default = "PortAWSExporterPolicyModule"
+  default = "PortAWSExporterPolicy"
 }
 
 variable "custom_port_credentials_secret_arn" {
@@ -22,15 +21,20 @@ variable "custom_port_credentials_secret_arn" {
   default     = null
 }
 
-variable "config_json_file" {
-  description = "Required path to the exporter config json file"
+variable "config_json" {
+  description = "Required file path / JSON formatted string of the exporter config"
   type        = string
 }
 
-variable "lambda_policy_file" {
-  description = "Optional path to a AWS policy json file to grant to the Lambda function. If not passed, using the default exporter policies"
+variable "config_s3_key" {
+  description = "Required s3 key name of the exporter config"
+  type        = string
+  default     = "config.json"
+}
+
+variable "lambda_policy" {
+  description = "Optional path or JSON formatted string of the AWS policy json to grant to the Lambda function. If not passed, using the default exporter policies"
   type = string
-  default = null
 }
 
 variable "function_name" {
@@ -42,7 +46,7 @@ variable "function_name" {
 variable "stack_name" {
   description = "Required CloudFormation Stack name to the Port exporter"
   type        = string
-  default     = "serverlessrepo-port-aws-exporter"
+  default     = "port-aws-exporter"
 }
 
 variable "events_queue_name" {
@@ -72,4 +76,3 @@ variable "schedule_expression" {
   description = "Required schedule expression to define an event schedule for the exporter, according to following spec https://docs.aws.amazon.com/lambda/latest/dg/services-cloudwatchevents-expressions.html."
   default = "rate(1 hour)"
 }
-
