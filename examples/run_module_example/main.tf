@@ -5,6 +5,6 @@ module "port_aws_exporter" {
   secret_name                      = var.secret_name
   create_bucket                    = var.create_bucket
   bucket_name                      = var.bucket_name
-  config_json_file                 = var.config_json_file
+  config_json_file                 = var.config_json
   function_name                    = var.function_name
 }
