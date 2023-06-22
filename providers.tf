@@ -15,8 +15,5 @@ terraform {
   }
 }
 
-provider "aws" {
-}
-
 provider "env" {
 }
