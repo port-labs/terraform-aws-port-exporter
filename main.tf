@@ -11,6 +11,10 @@ resource "aws_iam_policy" "port_aws_exporter_policy" {
 }
 
 resource "aws_serverlessapplicationrepository_cloudformation_stack" "port_aws_exporter_stack" {
+  tags = {
+      applyId = uuid()
+  }
+
   name           = var.stack_name
   application_id = "arn:aws:serverlessrepo:eu-west-1:185657066287:applications/port-aws-exporter"
   capabilities   = [
