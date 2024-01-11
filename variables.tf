@@ -67,7 +67,7 @@ variable "schedule_state" {
   default     = "DISABLED"
   validation {
     condition     = var.schedule_state == "ENABLED" || var.schedule_state == "DISABLED"
-    error_message = "Schedule state must be 'ENABLED' or 'DISABLED'"
+    error_message = "Schedule state must be 'ENABLED' or 'DISABLED'."
   }
 }
 
